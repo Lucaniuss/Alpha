@@ -1,4 +1,4 @@
-package gg.clouke.alpha.util;
+package gg.clouke.alpha.util.chat;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.ChatColor;
