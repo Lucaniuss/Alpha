@@ -1,6 +1,7 @@
-package gg.clouke.alpha.check.manager;
+package gg.clouke.alpha.check.registry;
 
 import gg.clouke.alpha.check.Check;
+import gg.clouke.alpha.check.impl.combat.autoclicker.AutoClickerA;
 import gg.clouke.alpha.check.impl.combat.range.RangeA;
 import gg.clouke.alpha.profile.Profile;
 import lombok.experimental.UtilityClass;
@@ -10,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @UtilityClass
-public final class CheckManager {
+public final class CheckRegistry {
 
     public final Class<?>[] CHECKS = new Class[]{
-            RangeA.class,
+            RangeA.class, AutoClickerA.class,
     };
 
     private final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
