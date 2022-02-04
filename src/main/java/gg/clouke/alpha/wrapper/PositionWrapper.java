@@ -6,7 +6,7 @@ import org.bukkit.util.Vector;
 /**
  * @author Clouke
  * @since 04.02.2022 17:59
- * Valent Network | All Rights Reserved
+ * All Rights Reserved
  */
 
 public class PositionWrapper {
