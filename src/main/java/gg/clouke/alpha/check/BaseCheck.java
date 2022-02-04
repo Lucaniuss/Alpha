@@ -1,4 +1,4 @@
-package gg.clouke.alpha.check.api;
+package gg.clouke.alpha.check;
 
 import java.lang.annotation.*;
 
