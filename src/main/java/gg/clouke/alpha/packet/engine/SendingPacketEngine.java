@@ -7,7 +7,9 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public final class SendingPacketEngine {
-    public void process(final Profile data, final Packet packet) {
+
+    public void update(final Profile data, final Packet packet) {
         data.getChecks().forEach(check -> check.handle(packet));
     }
+
 }
