@@ -1,32 +1,29 @@
 package gg.clouke.alpha.check;
 
+import gg.clouke.alpha.Alpha;
 import gg.clouke.alpha.packet.Packet;
-import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
-import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
+import gg.clouke.alpha.util.player.BoundBox;
+import gg.clouke.alpha.wrapper.AlertWrapper;
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import lombok.Getter;
 import gg.clouke.alpha.profile.Profile;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 @Getter
 public abstract class Check {
 
-    protected final Profile data;
+    protected final Profile profile;
     private double buffer;
+    private int vl;
 
-    public Check(final Profile data) {
-        this.data = data;
+    public Check(final Profile profile) {
+        this.profile = profile;
     }
 
-    /**
-     * This is our packet event system.
-     */
     public abstract void handle(final Packet packet);
 
-    /**
-     * This our buffer system.
-     */
     public final double increaseBuffer() {
         return buffer = Math.min(10000, buffer + 1);
     }
@@ -49,18 +46,49 @@ public abstract class Check {
         buffer *= multiplier;
     }
 
-
-    public final void debug(final Object object) {
-        data.getPlayer().sendMessage(ChatColor.RED + "[Alpha-Debug] " + ChatColor.GRAY + object);
+    public BaseCheck getBaseCheck() {
+        if (this.getClass().isAnnotationPresent(BaseCheck.class)) {
+            return this.getClass().getAnnotation(BaseCheck.class);
+        } else {
+            System.err.println("@BaseCheck annotation hasn't been added to the class " + this.getClass().getSimpleName() + ".");
+            return null;
+        }
     }
 
-    public final void broadcast(final Object object) {
-        Bukkit.broadcastMessage(ChatColor.RED + "[Alpha-Debug] " + ChatColor.GRAY + object);
+    public final void debug(final Object object) {
+        profile.getPlayer().sendMessage(ChatColor.RED + "[Alpha-Debug] " + ChatColor.GRAY + object);
+    }
+
+    protected void alert(final Object obj) {
+        this.vl++;
+        new AlertWrapper(this, profile, obj);
     }
 
     protected boolean isAttacking(Packet packet) {
         final WrappedPacketInUseEntity entity = new WrappedPacketInUseEntity(packet.getRawPacket());
         return (entity.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK);
+    }
+
+    protected Profile getTargetProfile() {
+        final Player player = (Player) profile.getCombatTracker().getTarget();
+        if (player == null)
+            throw new NullPointerException("Target is not a player");
+
+        return Alpha.INSTANCE.getProfileRouter().get(player);
+    }
+
+    /**
+     * <p>
+     * This function is used for reach checks to get a well calculated distance
+     *
+     * @param player Players Vector Location
+     * @param target Targets Vector Location
+     * @return Returning a better calculated distance from A to B {@link BoundBox}
+     */
+    public double getDistance(Vector player, Vector target) {
+        BoundBox bb = new BoundBox(target, 0.403125, 1.905, 0.1001);
+
+        return bb.distance(player);
     }
 
 }
