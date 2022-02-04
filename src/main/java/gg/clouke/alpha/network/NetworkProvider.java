@@ -1,4 +1,4 @@
-package gg.clouke.alpha.listener.packet;
+package gg.clouke.alpha.network;
 
 import gg.clouke.alpha.Alpha;
 import gg.clouke.alpha.packet.Packet;
@@ -13,28 +13,28 @@ import gg.clouke.alpha.packet.engine.SendingPacketEngine;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public final class PacketListener extends PacketListenerAbstract {
+public final class NetworkProvider extends PacketListenerAbstract {
 
     private final ExecutorService packetExecutor = Executors.newSingleThreadExecutor();
 
-    public PacketListener() {
+    public NetworkProvider() {
         super(PacketEventPriority.MONITOR);
     }
 
     @Override
     public void onPacketPlayReceive(final PacketPlayReceiveEvent event) {
-        final Profile profile = Alpha.INSTANCE.getPlayerDataManager().get(event.getPlayer());
+        final Profile profile = Alpha.INSTANCE.getProfileRouter().get(event.getPlayer());
         if (profile == null) return;
 
-        packetExecutor.execute(() -> ReceivingPacketEngine.process(profile, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId())));
+        packetExecutor.execute(() -> ReceivingPacketEngine.update(profile, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId())));
     }
 
     @Override
     public void onPacketPlaySend(final PacketPlaySendEvent event) {
-        final Profile profile = Alpha.INSTANCE.getPlayerDataManager().get(event.getPlayer());
+        final Profile profile = Alpha.INSTANCE.getProfileRouter().get(event.getPlayer());
         if (profile == null) return;
 
-        packetExecutor.execute(() -> SendingPacketEngine.process(profile, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId())));
+        packetExecutor.execute(() -> SendingPacketEngine.update(profile, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId())));
     }
 
 
