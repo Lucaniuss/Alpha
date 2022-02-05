@@ -3,8 +3,8 @@
 Anticheat made for 1.7x-1.8x Spigot servers
 Focusing on Reach & AutoClicker checks (Primarily for PVP)
 
-Note:
-None of these checks are tested at the moment, but they should be working fine lol
+Note(s):
+Tested Reach with 800ms & got a decent amount of stable results
 
 
 Credits:
