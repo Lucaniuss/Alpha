@@ -3,6 +3,7 @@ package gg.clouke.alpha.profile;
 import gg.clouke.alpha.check.Check;
 import gg.clouke.alpha.tracker.CombatTracker;
 import gg.clouke.alpha.util.task.Task;
+import io.github.retrooper.packetevents.PacketEvents;
 import lombok.Data;
 import gg.clouke.alpha.check.registry.CheckRegistry;
 import gg.clouke.alpha.tracker.PositionTracker;
@@ -38,6 +39,14 @@ public final class Profile {
     public void exempt(int seconds) {
         this.exempted = true;
         Task.run(() -> this.exempted = false, 20L * seconds);
+    }
+
+    public int getPing() {
+        return PacketEvents.get().getPlayerUtils().getPing(this.player);
+    }
+
+    public int getPingTicks() {
+        return (this.getPing() / 50) + 5;
     }
 
 }
