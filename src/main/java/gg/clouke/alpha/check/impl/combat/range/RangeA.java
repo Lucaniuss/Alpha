@@ -43,8 +43,8 @@ public class RangeA extends Check {
 
                 final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
 
-                final Vector player = profile.getPositionTracker().toLocation().toVector();
                 final PositionTracker tracker = profile.getPositionTracker();
+                final Vector player = tracker.toLocation().toVector();
 
                 long transTick = (System.currentTimeMillis() - preTick);
 
