@@ -69,6 +69,8 @@ public abstract class Check {
         return (entity.getAction() == WrappedPacketInUseEntity.EntityUseAction.ATTACK);
     }
 
+    protected int ticks = Alpha.INSTANCE.getTickTracker().getTicks();
+
     protected Profile getTargetProfile() {
         final Player player = (Player) profile.getCombatTracker().getTarget();
         if (player == null)
