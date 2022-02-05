@@ -27,7 +27,7 @@ public class AlphaCommand extends BaseCommand {
         Asynchronous.run(() -> {
             final Player player = cmd.getPlayer();
 
-            if (commands.isEmpty()) { // Only initialize once
+            if (commands.size() == 0) { // Only initialize once
                 ClassRegistration.getClassesInPackage(plugin.getPlugin(), "gg.clouke.command.impl")
                         .forEach(clazz -> commands.add(clazz.getSimpleName().toLowerCase()));
             }
