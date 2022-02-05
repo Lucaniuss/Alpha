@@ -25,13 +25,11 @@ public class CombatTracker {
     }
 
     public void update(final Packet packet) {
-        if (packet.isUseEntity()) {
-            final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
-            if (wrapper.getAction() != WrappedPacketInUseEntity.EntityUseAction.ATTACK) return;
+        final WrappedPacketInUseEntity wrapper = new WrappedPacketInUseEntity(packet.getRawPacket());
+        if (wrapper.getAction() != WrappedPacketInUseEntity.EntityUseAction.ATTACK) return;
 
-            this.target = wrapper.getEntity();
-            this.lastHit = System.currentTimeMillis();
-        }
+        this.target = wrapper.getEntity();
+        this.lastHit = System.currentTimeMillis();
     }
 
 }
