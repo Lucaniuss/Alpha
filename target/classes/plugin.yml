@@ -1,0 +1,5 @@
+name: Alpha
+version: 1.0
+author: Clouke
+main: gg.clouke.alpha.AlphaPlugin
+load: STARTUP
