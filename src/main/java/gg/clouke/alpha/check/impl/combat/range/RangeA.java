@@ -5,7 +5,6 @@ import gg.clouke.alpha.check.BaseCheck;
 import gg.clouke.alpha.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
 import gg.clouke.alpha.tracker.PositionTracker;
-import gg.clouke.alpha.wrapper.PositionWrapper;
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import org.bukkit.util.Vector;
 
@@ -15,13 +14,17 @@ import org.bukkit.util.Vector;
  * All Rights Reserved
  *
  * <p>
- * Reach Class with a transaction detection of 3.009 ~ 3.03
- * Using {@link PositionTracker} and wrapping into a Vector with {@link PositionWrapper}
+ * This class is a variance of a low reach detection with any sorts of ping
+ * We take advantage of the flying packet to get the latest player tick
+ * Distance can return 0 & 1's which means it is not close to 3 blocks of reach,
+ * If they are close to a 3 block range distance, then the distance results will become more accurate.
+ * @see PositionTracker
  */
 
 @BaseCheck(name = "Range", type = "A", experimental = true)
 public class RangeA extends Check {
 
+    private long preTick;
     private boolean sent;
 
     public RangeA(final Profile profile) {
@@ -31,30 +34,41 @@ public class RangeA extends Check {
     @Override
     public void handle(final Packet packet) {
         if (packet.isUseEntity()) {
-            if (isAttacking(packet))
+            if (isAttacking(packet)) {
                 sent = true;
+                preTick = System.currentTimeMillis();
+            }
         } else if (packet.isFlying()) {
             if (sent) {
 
                 final WrappedPacketInFlying wrapper = new WrappedPacketInFlying(packet.getRawPacket());
 
+                final Vector player = profile.getPositionTracker().toLocation().toVector();
                 final PositionTracker tracker = profile.getPositionTracker();
-                final Vector player = new PositionWrapper(tracker.getX(), tracker.getY(), tracker.getZ()).toVector();
-                final Profile targetProfile = getTargetProfile();
 
-                final PositionTracker targetTracker = targetProfile.getPositionTracker();
-                final Vector target = new PositionWrapper(targetTracker.getX(), targetTracker.getY(), targetTracker.getZ()).toVector();
+                long transTick = (System.currentTimeMillis() - preTick);
 
-                final double distance = this.getDistance(player, target);
-                final double threshold = wrapper.isPosition() ? 3.009 : 3.03;
+                double distance = tracker.getTrackedTarget()
+                        .stream()
+                        .mapToDouble(positions -> player.distance(positions.getX()) - 0.4031)
+                        .min()
+                        .orElse(0);
 
-                debug("D: " + distance + " T: " + threshold);
+                if (distance == 0 || distance > 4.5D)
+                    return;
+
+                final double threshold = wrapper.isPosition() ? 3.009 : 3.04;
+
+                debug("D: " + distance + " T: " + threshold + " TT: " + transTick);
                 if (distance >= threshold) {
-                    alert("D: " + distance + " T: " + threshold);
+                    if (transTick < 1) {
+                        alert("D: " + distance + " T: " + threshold);
+                    }
                 }
 
                 sent = false;
             }
+
         }
     }
 }
