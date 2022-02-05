@@ -3,6 +3,7 @@ package gg.clouke.alpha.profile;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,12 +34,14 @@ public final class ProfileRouter {
      * <p>
      * Get the profile of {@link Player}
      * @param player Issued player
-     * @return Returns the profile map of the issued player, if they are not in the hashmap we will throw a new NullPtr
+     * @return Returns the profile map of the issued player
      */
     public Profile get(final Player player) {
-        if (profiles.get(player.getUniqueId()) == null)
-            throw new NullPointerException("Profile cannot be null");
-
         return profiles.get(player.getUniqueId());
     }
+
+    public Collection<Profile> getAllProfiles() {
+        return profiles.values();
+    }
+
 }
