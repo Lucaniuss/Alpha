@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 
 public final class NetworkProvider extends PacketListenerAbstract {
 
+    private final Alpha plugin = Alpha.INSTANCE;
     private final ExecutorService packetExecutor = Executors.newSingleThreadExecutor();
 
     public NetworkProvider() {
@@ -23,7 +24,7 @@ public final class NetworkProvider extends PacketListenerAbstract {
 
     @Override
     public void onPacketPlayReceive(final PacketPlayReceiveEvent event) {
-        final Profile profile = Alpha.INSTANCE.getProfileRouter().get(event.getPlayer());
+        final Profile profile = plugin.getProfileRouter().get(event.getPlayer());
         if (profile == null) return;
 
         packetExecutor.execute(() -> ReceivingPacketEngine.update(profile, new Packet(Packet.Direction.RECEIVE, event.getNMSPacket(), event.getPacketId())));
@@ -31,7 +32,7 @@ public final class NetworkProvider extends PacketListenerAbstract {
 
     @Override
     public void onPacketPlaySend(final PacketPlaySendEvent event) {
-        final Profile profile = Alpha.INSTANCE.getProfileRouter().get(event.getPlayer());
+        final Profile profile = plugin.getProfileRouter().get(event.getPlayer());
         if (profile == null) return;
 
         packetExecutor.execute(() -> SendingPacketEngine.update(profile, new Packet(Packet.Direction.SEND, event.getNMSPacket(), event.getPacketId())));
