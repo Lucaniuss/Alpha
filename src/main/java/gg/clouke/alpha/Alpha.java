@@ -1,6 +1,8 @@
 package gg.clouke.alpha;
 
 import gg.clouke.alpha.profile.ProfileRouter;
+import gg.clouke.alpha.tracker.TickTracker;
+import gg.clouke.alpha.util.clazz.ClassRegistration;
 import gg.clouke.alpha.util.command.CommandFramework;
 import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.utils.server.ServerVersion;
@@ -18,63 +20,49 @@ public enum Alpha {
     private AlphaPlugin plugin;
     private ProfileRouter profileRouter;
     private CommandFramework commandFramework;
+    private TickTracker tickTracker;
 
-    /**
-     * This method gets called on load.
-     * Its recommended to create set and load PacketEvents settings here.
-     *
-     * @param plugin Main plugin instance.
-     */
     public void load(final AlphaPlugin plugin) {
         this.plugin = plugin;
 
-        loadPacketEvents(plugin);
+        PacketEvents.create(plugin).getSettings()
+                .checkForUpdates(false)
+                .backupServerVersion(ServerVersion.v_1_8_8);
+
+        PacketEvents.get().load();
     }
 
-    /**
-     * This method gets called on plugin enable.
-     * Here we can register our listeners and enable our plugin.
-     *
-     * @param plugin Main plugin instance.
-     */
     public void init(final AlphaPlugin plugin) {
         profileRouter = new ProfileRouter();
-        Bukkit.getOnlinePlayers().forEach(player -> profileRouter.add(player));
-        CheckRegistry.setup();
-        startPacketEvents(plugin);
+        startPacketEvents();
         handleBukkit(plugin);
         commandFramework = new CommandFramework(plugin);
+        CheckRegistry.setup();
+        registerCommands();
+        (tickTracker = new TickTracker()).runTaskTimerAsynchronously(plugin, 0L, 1L);
+    }
+
+    private void registerCommands() {
+        ClassRegistration.loadCommandsFromPackage(plugin, "gg.clouke.alpha.command");
     }
 
     public void stop(final AlphaPlugin plugin) {
-        stopPacketEvents(plugin);
+        stopPacketEvents();
         Bukkit.getScheduler().cancelTasks(plugin);
 
         profileRouter = null;
     }
 
-
-    private void loadPacketEvents(final AlphaPlugin plugin) {
-        PacketEvents.create(plugin).getSettings()
-                .checkForUpdates(false)
-                .backupServerVersion(ServerVersion.v_1_7_10);
-
-        PacketEvents.get().load();
-    }
-
-    private void startPacketEvents(final AlphaPlugin plugin) {
+    private void startPacketEvents() {
         PacketEvents.get().init();
-
         PacketEvents.get().getEventManager().registerListener(new NetworkProvider());
     }
 
-    private void stopPacketEvents(final AlphaPlugin plugin) {
+    private void stopPacketEvents() {
         PacketEvents.get().terminate();
     }
 
     private void handleBukkit(final AlphaPlugin plugin) {
-        plugin.saveDefaultConfig();
-
         plugin.getServer().getPluginManager().registerEvents(new ProfileRegistry(), plugin);
     }
 }
