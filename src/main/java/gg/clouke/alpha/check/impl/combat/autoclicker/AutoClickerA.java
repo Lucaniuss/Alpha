@@ -38,6 +38,7 @@ public class AutoClickerA extends Check {
                 alert("A: " + avg);
             }
 
+            tick = 0;
         } else if (packet.isFlying()) {
             tick++;
         }
