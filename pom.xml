@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.tecnio</groupId>
-    <artifactId>AntiCheatBase</artifactId>
+    <groupId>gg.clouke</groupId>
+    <artifactId>Alpha</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -36,11 +36,11 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <finalName>AntiCheat</finalName>
+                            <finalName>Alpha</finalName>
                             <relocations>
                                 <relocation>
                                     <pattern>io.github.retrooper.packetevents</pattern>
-                                    <shadedPattern>me.tecnio.anticheat.packetevents</shadedPattern> <!--relocate packetevents package-->
+                                    <shadedPattern>gg.clouke.alpha.packetevents</shadedPattern> <!--relocate packetevents package-->
                                 </relocation>
                             </relocations>
                         </configuration>
