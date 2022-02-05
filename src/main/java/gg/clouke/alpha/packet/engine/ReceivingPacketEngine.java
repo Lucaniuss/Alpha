@@ -14,6 +14,7 @@ public final class ReceivingPacketEngine {
         if (packet.isUseEntity()) {
             profile.getCombatTracker().update(packet);
         }
+        profile.getClickTracker().update(packet);
 
         profile.getChecks().forEach(check -> check.handle(packet));
     }
