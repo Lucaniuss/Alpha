@@ -1,6 +1,7 @@
 package gg.clouke.alpha.profile;
 
 import gg.clouke.alpha.check.Check;
+import gg.clouke.alpha.tracker.ClickTracker;
 import gg.clouke.alpha.tracker.CombatTracker;
 import gg.clouke.alpha.util.task.Task;
 import io.github.retrooper.packetevents.PacketEvents;
@@ -28,6 +29,7 @@ public final class Profile {
 
     private final PositionTracker positionTracker = new PositionTracker(this);
     private final CombatTracker combatTracker = new CombatTracker(this);
+    private final ClickTracker clickTracker = new ClickTracker(this);
 
     private boolean exempted = false;
 
