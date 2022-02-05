@@ -33,6 +33,7 @@ public class AutoClickerA extends Check {
 
             if (!tickMonitor.isFull()) return;
 
+            //debug(avg);
             if (avg <= 1.3) {
                 alert("A: " + avg);
             }
