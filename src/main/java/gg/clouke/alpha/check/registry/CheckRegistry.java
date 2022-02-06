@@ -2,7 +2,9 @@ package gg.clouke.alpha.check.registry;
 
 import gg.clouke.alpha.check.Check;
 import gg.clouke.alpha.check.impl.combat.autoclicker.AutoClickerA;
+import gg.clouke.alpha.check.impl.combat.autoclicker.AutoClickerB;
 import gg.clouke.alpha.check.impl.combat.range.RangeA;
+import gg.clouke.alpha.check.impl.combat.range.RangeB;
 import gg.clouke.alpha.profile.Profile;
 import lombok.experimental.UtilityClass;
 
@@ -14,7 +16,11 @@ import java.util.List;
 public final class CheckRegistry {
 
     public final Class<?>[] CHECKS = new Class[]{
-            RangeA.class, AutoClickerA.class,
+
+            //AutoClickerA.class, AutoClickerB.class,
+
+            RangeA.class, RangeB.class,
+
     };
 
     private final List<Constructor<?>> CONSTRUCTORS = new ArrayList<>();
