@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 /**
  * @author Clouke
  * @since 04.02.2022 18:26
- * Valent Network | All Rights Reserved
+ * All Rights Reserved
  */
 
 @Data
