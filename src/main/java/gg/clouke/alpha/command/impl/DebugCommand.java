@@ -1,5 +1,8 @@
 package gg.clouke.alpha.command.impl;
 
+import gg.clouke.alpha.Alpha;
+import gg.clouke.alpha.check.Check;
+import gg.clouke.alpha.profile.Profile;
 import gg.clouke.alpha.util.chat.CC;
 import gg.clouke.alpha.util.command.BaseCommand;
 import gg.clouke.alpha.util.command.Command;
@@ -11,6 +14,7 @@ import org.bukkit.entity.Player;
  * @since 04.02.2022 23:30
  * All Rights Reserved
  */
+
 public class DebugCommand extends BaseCommand {
 
     @Command(name = "alpha.debug", permission = "alpha.command.debug")
@@ -19,9 +23,22 @@ public class DebugCommand extends BaseCommand {
         Player player = cmd.getPlayer();
         String[] args = cmd.getArgs();
 
-        if (args.length < 1) {
+        if (args.length != 2) {
             player.sendMessage(CC.translate("&cUsage: /alpha debug <check> <type>"));
             return;
+        }
+
+        final String queryCheck = args[0] + " " + args[1];
+        final Profile profile = Alpha.INSTANCE.getProfileRouter().get(player);
+        for (final Check check : profile.getChecks()) {
+            final String loopedCheck = check.getBaseCheck().name() + " " + check.getBaseCheck().type();
+            if (queryCheck.equalsIgnoreCase(loopedCheck)) {
+                check.setDebug(true);
+                player.sendMessage(CC.translate("&eYou're now debugging &a" + loopedCheck + "&e."));
+                break;
+            } else {
+                check.setDebug(true);
+            }
         }
 
     }

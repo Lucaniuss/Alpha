@@ -3,10 +3,11 @@ package gg.clouke.alpha.check;
 import gg.clouke.alpha.Alpha;
 import gg.clouke.alpha.packet.Packet;
 import gg.clouke.alpha.util.player.BoundBox;
-import gg.clouke.alpha.wrapper.AlertWrapper;
+import gg.clouke.alpha.module.alert.AlertWrapper;
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import lombok.Getter;
 import gg.clouke.alpha.profile.Profile;
+import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -15,8 +16,11 @@ import org.bukkit.util.Vector;
 public abstract class Check {
 
     protected final Profile profile;
-    private double buffer;
+    protected double buffer;
     private int vl;
+
+    @Setter
+    public boolean debug;
 
     public Check(final Profile profile) {
         this.profile = profile;
@@ -56,7 +60,7 @@ public abstract class Check {
     }
 
     public final void debug(final Object object) {
-        profile.getPlayer().sendMessage(ChatColor.RED + "[Alpha-Debug] " + ChatColor.GRAY + object);
+        if (debug) profile.getPlayer().sendMessage(ChatColor.RED + "[Alpha-Debug] " + ChatColor.GRAY + object);
     }
 
     protected void alert(final Object obj) {
@@ -74,7 +78,7 @@ public abstract class Check {
     protected Profile getTargetProfile() {
         final Player player = (Player) profile.getCombatTracker().getTarget();
         if (player == null)
-            throw new NullPointerException("Target is not a player");
+            return null;
 
         return Alpha.INSTANCE.getProfileRouter().get(player);
     }
