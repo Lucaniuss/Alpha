@@ -9,6 +9,7 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPac
 import lombok.Data;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -42,9 +43,12 @@ public final class PositionTracker {
         this.y = wrapper.getY();
         this.z = wrapper.getZ() + increment;
 
-        final Profile target = Alpha.INSTANCE.getProfileRouter().get((Player) profile.getCombatTracker().getTarget());
-        if (target != null) {
-            trackedTarget.add(new Pair<>(target.getPositionTracker().toVector(), plugin.getTickTracker().getTicks()));
+        final Entity eTarget = profile.getCombatTracker().getTarget();
+        if (eTarget != null) {
+            if (eTarget instanceof Player) {
+                final Profile target = Alpha.INSTANCE.getProfileRouter().get((Player) profile.getCombatTracker().getTarget());
+                trackedTarget.add(new Pair<>(target.getPositionTracker().toVector(), plugin.getTickTracker().getTicks()));
+            }
         } else {
             trackedTarget.clear();
         }
