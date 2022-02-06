@@ -27,12 +27,12 @@ public class AlphaCommand extends BaseCommand {
         Asynchronous.run(() -> {
             final Player player = cmd.getPlayer();
 
-            if (commands.size() == 0) { // Only initialize once
-                ClassRegistration.getClassesInPackage(plugin.getPlugin(), "gg.clouke.command.impl")
-                        .forEach(clazz -> commands.add(clazz.getSimpleName().toLowerCase()));
+            if (commands.isEmpty()) { // Only initialize once
+                ClassRegistration.getClassesInPackage(plugin.getPlugin(), "gg.clouke.alpha.command.impl")
+                        .forEach(clazz -> commands.add(clazz.getSimpleName().toLowerCase().replace("command", "")));
             }
 
-            player.sendMessage(CC.translate("&e&lAlpha Commands (&b&l" + commands.size() + "&e&l):"));
+            player.sendMessage(CC.translate("&e&lAlpha Commands (&c&l" + commands.size() + "&e&l):"));
             for (final String command : commands) {
                 player.sendMessage(CC.translate(" &7* &e/" + cmd.getLabel() + " " + command));
             }
