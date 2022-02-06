@@ -31,6 +31,7 @@ public final class Profile {
     private final CombatTracker combatTracker = new CombatTracker(this);
     private final ClickTracker clickTracker = new ClickTracker(this);
 
+    private int ticks = 0;
     private boolean exempted = false;
 
     public Profile(final Player player) {
