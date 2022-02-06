@@ -1,11 +1,11 @@
 package gg.clouke.alpha.command.impl;
 
-import gg.clouke.alpha.profile.Profile;
-import gg.clouke.alpha.util.chat.CC;
+import gg.clouke.alpha.Alpha;
+import gg.clouke.alpha.module.alert.Alerts;
 import gg.clouke.alpha.util.command.BaseCommand;
 import gg.clouke.alpha.util.command.Command;
 import gg.clouke.alpha.util.command.CommandArgs;
-import gg.clouke.alpha.wrapper.AlertWrapper;
+import org.bukkit.entity.Player;
 
 /**
  * @author Clouke
@@ -18,16 +18,14 @@ public class AlertsCommand extends BaseCommand {
     @Command(name = "alpha.alerts", permission = "alpha.command.alerts")
     @Override
     public void onCommand(final CommandArgs cmd) {
-        final Profile profile = plugin.getProfileRouter().get(cmd.getPlayer());
+        final Player player = cmd.getPlayer();
+        final Alerts alerts = Alpha.INSTANCE.getAlerts();
 
-        boolean boo = AlertWrapper.alerts.contains(profile);
-        if (!boo) {
-            AlertWrapper.alerts.add(profile);
-            profile.getPlayer().sendMessage(CC.translate("&eYou've &aenabled &eAlpha alerts"));
+        if (alerts.hasAlerts(player)) {
+            alerts.remove(player);
             return;
         }
 
-        AlertWrapper.alerts.remove(profile);
-        profile.getPlayer().sendMessage(CC.translate("&eYou've &cdisabled &eAlpha alerts"));
+        alerts.add(player);
     }
 }

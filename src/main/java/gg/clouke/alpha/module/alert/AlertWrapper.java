@@ -1,13 +1,11 @@
-package gg.clouke.alpha.wrapper;
+package gg.clouke.alpha.module.alert;
 
+import gg.clouke.alpha.Alpha;
 import gg.clouke.alpha.check.Check;
 import gg.clouke.alpha.profile.Profile;
 import gg.clouke.alpha.util.chat.CC;
 import gg.clouke.alpha.util.chat.Clickable;
 import lombok.Data;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Clouke
@@ -18,7 +16,7 @@ import java.util.Set;
 @Data
 public class AlertWrapper {
 
-    public static final Set<Profile> alerts = new HashSet<>();
+    private final Alerts alerts = Alpha.INSTANCE.getAlerts();
 
     private final Check check;
     private final Profile profile;
@@ -40,7 +38,7 @@ public class AlertWrapper {
                 "/teleport " + profile.getPlayer().getName()
         );
 
-        alerts.forEach(alerter -> clickable.sendToPlayer(alerter.getPlayer()));
+        alerts.getAlerter().forEach(clickable::sendToPlayer);
     }
 
 }
