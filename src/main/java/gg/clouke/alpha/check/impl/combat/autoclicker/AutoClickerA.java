@@ -4,8 +4,7 @@ import gg.clouke.alpha.check.Check;
 import gg.clouke.alpha.check.BaseCheck;
 import gg.clouke.alpha.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
-import gg.clouke.alpha.util.helper.MathHelper;
-import gg.clouke.alpha.util.list.EvictingList;
+import gg.clouke.alpha.tracker.ClickTracker;
 
 /**
  * @author Clouke
@@ -16,31 +15,25 @@ import gg.clouke.alpha.util.list.EvictingList;
 @BaseCheck(name = "AutoClicker", type = "A", experimental = true)
 public class AutoClickerA extends Check {
 
-    private double tick;
-    private final EvictingList<Double> tickMonitor = new EvictingList<>(40);
+    private final ClickTracker tracker;
 
     public AutoClickerA(final Profile profile) {
         super(profile);
+        this.tracker = profile.getClickTracker();
     }
 
     @Override
     public void handle(final Packet packet) {
-        if (packet.isBlockDig()) return;
+        if (!packet.isArmAnimation()) return;
+        if (!tracker.isFull()) return;
 
-        if (packet.isArmAnimation()) {
-            this.tickMonitor.add(tick);
-            double avg = MathHelper.getAverage(tickMonitor);
-
-            if (!tickMonitor.isFull()) return;
-
-            //debug(avg);
-            if (avg <= 1.3) {
-                alert("A: " + avg);
+        if (tracker.getAverageTicks() <= 1.3) {
+            if (++buffer >= 20) {
+                buffer = 20;
+                alert(tracker.getAverageTicks());
             }
-
-            tick = 0;
-        } else if (packet.isFlying()) {
-            tick++;
+        } else {
+            buffer = 0;
         }
     }
 }
