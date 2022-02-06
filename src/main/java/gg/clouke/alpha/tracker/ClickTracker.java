@@ -21,6 +21,7 @@ public class ClickTracker {
     private final Profile profile;
     private final EvictingList<Double> tickMonitor;
     private final List<Long> mappedCPS;
+    private final List<ClickType> clickTypes;
 
     private ClickType clickType;
     private double averageTicks;
@@ -28,13 +29,14 @@ public class ClickTracker {
     private boolean digging;
     private long lastClickMillis;
     private double lastClickTick;
-    private int cps;
+    private int cps, lastCps;
 
     public ClickTracker(final Profile profile) {
         this.profile = profile;
         this.tickMonitor = new EvictingList<>(40);
         this.clickType = ClickType.NONE;
-        this.mappedCPS = new ArrayList<>();
+        this.clickTypes = new ArrayList<>(10);
+        this.mappedCPS = new ArrayList<>(30);
     }
 
     public void update(final Packet packet) {
@@ -52,6 +54,7 @@ public class ClickTracker {
 
             this.calculateCps();
             this.processClicker();
+            this.mappedCPS.add(System.currentTimeMillis());
 
             this.lastClickMillis = System.currentTimeMillis();
             this.lastClickTick = tickMonitor.get(0);
@@ -79,6 +82,8 @@ public class ClickTracker {
     }
 
     private void calculateCps() {
+        this.lastCps = cps;
+
         long time = System.currentTimeMillis();
         this.mappedCPS.removeIf(i -> (i + 1000L < time));
         this.cps = this.mappedCPS.size();
@@ -107,6 +112,7 @@ public class ClickTracker {
 
         if (_swings >= 3) {
             this.clickType = ClickType.DOUBLE;
+            this.clickTypes.add(clickType);
         }
     }
 
@@ -116,6 +122,7 @@ public class ClickTracker {
         double avg = this.getAverageTicks();
         if (avg <= 1.3D) { // Can go higher but to be sure we check 1.3
             this.clickType = ClickType.AUTO;
+            this.clickTypes.add(clickType);
         }
     }
 
@@ -130,6 +137,7 @@ public class ClickTracker {
 
             if (_swings < 2) {
                 this.clickType = ClickType.JITTER;
+                this.clickTypes.add(clickType);
             }
 
         }
