@@ -1,5 +1,6 @@
 package gg.clouke.alpha;
 
+import gg.clouke.alpha.module.alert.Alerts;
 import gg.clouke.alpha.profile.ProfileRouter;
 import gg.clouke.alpha.tracker.TickTracker;
 import gg.clouke.alpha.util.clazz.ClassRegistration;
@@ -21,6 +22,7 @@ public enum Alpha {
     private ProfileRouter profileRouter;
     private CommandFramework commandFramework;
     private TickTracker tickTracker;
+    private Alerts alerts;
 
     public void load(final AlphaPlugin plugin) {
         this.plugin = plugin;
@@ -40,6 +42,7 @@ public enum Alpha {
         CheckRegistry.setup();
         registerCommands();
         (tickTracker = new TickTracker()).runTaskTimerAsynchronously(plugin, 0L, 1L);
+        alerts = new Alerts();
     }
 
     private void registerCommands() {
