@@ -1,4 +1,4 @@
-package gg.clouke.alpha.packet;
+package gg.clouke.alpha.network.packet;
 
 import io.github.retrooper.packetevents.packettype.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.NMSPacket;
