@@ -2,7 +2,7 @@ package gg.clouke.alpha.check.impl.combat.range;
 
 import gg.clouke.alpha.check.Check;
 import gg.clouke.alpha.check.BaseCheck;
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
 import gg.clouke.alpha.tracker.PositionTracker;
 import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
@@ -21,7 +21,7 @@ import org.bukkit.util.Vector;
  * @see PositionTracker
  */
 
-@BaseCheck(name = "Range", type = "A", experimental = true)
+@BaseCheck(name = "Range", type = "A", experimental = true, maxVl = 30)
 public class RangeA extends Check {
 
     private long preTick;

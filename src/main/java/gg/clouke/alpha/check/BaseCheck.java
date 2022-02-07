@@ -9,5 +9,7 @@ public @interface BaseCheck {
     String name();
     String type();
     boolean experimental() default false;
+    int maxVl() default 20;
+    boolean disabled() default false;
 
 }

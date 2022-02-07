@@ -2,7 +2,7 @@ package gg.clouke.alpha.check.impl.combat.range;
 
 import gg.clouke.alpha.check.BaseCheck;
 import gg.clouke.alpha.check.Check;
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
 import org.bukkit.util.Vector;
 
@@ -12,7 +12,7 @@ import org.bukkit.util.Vector;
  * All Rights Reserved
  */
 
-@BaseCheck(name = "Range", type = "B", experimental = true)
+@BaseCheck(name = "Range", type = "B", experimental = true, maxVl = 30)
 public class RangeB extends Check {
 
     private boolean sent;
@@ -42,7 +42,7 @@ public class RangeB extends Check {
             if (collision >= 6D) return;
 
             debug("C: " + collision + " E: " + equal);
-            if (collision >= 3.3D && equal) {
+            if (collision >= 3.5D && equal) {
                 alert(collision);
             }
 
