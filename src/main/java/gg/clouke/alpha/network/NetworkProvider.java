@@ -1,14 +1,14 @@
 package gg.clouke.alpha.network;
 
 import gg.clouke.alpha.Alpha;
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
 import io.github.retrooper.packetevents.event.PacketListenerAbstract;
 import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.event.priority.PacketEventPriority;
-import gg.clouke.alpha.packet.engine.ReceivingPacketEngine;
-import gg.clouke.alpha.packet.engine.SendingPacketEngine;
+import gg.clouke.alpha.network.packet.engine.ReceivingPacketEngine;
+import gg.clouke.alpha.network.packet.engine.SendingPacketEngine;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
