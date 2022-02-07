@@ -1,7 +1,7 @@
 package gg.clouke.alpha.command.impl;
 
 import gg.clouke.alpha.Alpha;
-import gg.clouke.alpha.module.alert.Alerts;
+import gg.clouke.alpha.module.alert.AlertModule;
 import gg.clouke.alpha.util.command.BaseCommand;
 import gg.clouke.alpha.util.command.Command;
 import gg.clouke.alpha.util.command.CommandArgs;
@@ -19,13 +19,13 @@ public class AlertsCommand extends BaseCommand {
     @Override
     public void onCommand(final CommandArgs cmd) {
         final Player player = cmd.getPlayer();
-        final Alerts alerts = Alpha.INSTANCE.getAlerts();
+        final AlertModule alertModule = Alpha.INSTANCE.getAlertModule();
 
-        if (alerts.hasAlerts(player)) {
-            alerts.remove(player);
+        if (alertModule.hasAlerts(player)) {
+            alertModule.remove(player);
             return;
         }
 
-        alerts.add(player);
+        alertModule.add(player);
     }
 }
