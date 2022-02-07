@@ -1,7 +1,7 @@
 package gg.clouke.alpha.tracker;
 
 import gg.clouke.alpha.Alpha;
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
 import lombok.Data;

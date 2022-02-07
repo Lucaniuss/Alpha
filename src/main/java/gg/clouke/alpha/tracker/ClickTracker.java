@@ -1,6 +1,6 @@
 package gg.clouke.alpha.tracker;
 
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
 import gg.clouke.alpha.util.helper.MathHelper;
 import gg.clouke.alpha.util.list.EvictingList;

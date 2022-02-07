@@ -1,7 +1,8 @@
 package gg.clouke.alpha.check;
 
 import gg.clouke.alpha.Alpha;
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.module.punishment.BanModule;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.util.player.BoundBox;
 import gg.clouke.alpha.module.alert.AlertWrapper;
 import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
@@ -66,6 +67,10 @@ public abstract class Check {
     protected void alert(final Object obj) {
         this.vl++;
         new AlertWrapper(this, profile, obj);
+
+        if (this.vl > getBaseCheck().maxVl()) {
+            new BanModule(profile);
+        }
     }
 
     protected boolean isAttacking(Packet packet) {
