@@ -2,7 +2,7 @@ package gg.clouke.alpha.check.impl.combat.autoclicker;
 
 import gg.clouke.alpha.check.BaseCheck;
 import gg.clouke.alpha.check.Check;
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
 
 /**
@@ -11,7 +11,7 @@ import gg.clouke.alpha.profile.Profile;
  * All Rights Reserved
  */
 
-@BaseCheck(name = "AutoClicker", type = "B", experimental = true)
+@BaseCheck(name = "AutoClicker", type = "B", experimental = true, maxVl = 100)
 public class AutoClickerB extends Check {
 
     private int ticks;
