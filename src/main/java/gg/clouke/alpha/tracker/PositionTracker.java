@@ -1,7 +1,7 @@
 package gg.clouke.alpha.tracker;
 
 import gg.clouke.alpha.Alpha;
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
 import gg.clouke.alpha.util.Pair;
 import gg.clouke.alpha.util.list.EvictingList;
@@ -47,7 +47,7 @@ public final class PositionTracker {
         if (eTarget != null) {
             if (eTarget instanceof Player) {
                 final Profile target = Alpha.INSTANCE.getProfileRouter().get((Player) profile.getCombatTracker().getTarget());
-                trackedTarget.add(new Pair<>(target.getPositionTracker().toVector(), plugin.getTickTracker().getTicks()));
+                trackedTarget.add(new Pair<>(target.getPositionTracker().toVector(), target.getTicks()));
             }
         } else {
             trackedTarget.clear();
