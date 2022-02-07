@@ -1,10 +1,11 @@
 package gg.clouke.alpha;
 
-import gg.clouke.alpha.module.alert.Alerts;
+import gg.clouke.alpha.module.alert.AlertModule;
 import gg.clouke.alpha.profile.ProfileRouter;
 import gg.clouke.alpha.tracker.TickTracker;
 import gg.clouke.alpha.util.clazz.ClassRegistration;
 import gg.clouke.alpha.util.command.CommandFramework;
+import gg.clouke.alpha.util.config.ConfigFile;
 import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.utils.server.ServerVersion;
 import lombok.Getter;
@@ -22,7 +23,9 @@ public enum Alpha {
     private ProfileRouter profileRouter;
     private CommandFramework commandFramework;
     private TickTracker tickTracker;
-    private Alerts alerts;
+    private AlertModule alertModule;
+    private ConfigFile config;
+    private boolean debug;
 
     public void load(final AlphaPlugin plugin) {
         this.plugin = plugin;
@@ -35,25 +38,35 @@ public enum Alpha {
     }
 
     public void init(final AlphaPlugin plugin) {
+        registerConfig();
         profileRouter = new ProfileRouter();
         startPacketEvents();
         handleBukkit(plugin);
-        commandFramework = new CommandFramework(plugin);
-        CheckRegistry.setup();
         registerCommands();
+        registerModules();
+    }
+
+    private void registerConfig() {
+        this.config = new ConfigFile(plugin, "config.yml");
+    }
+
+    private void registerModules() {
+        CheckRegistry.setup();
         (tickTracker = new TickTracker()).runTaskTimerAsynchronously(plugin, 0L, 1L);
-        alerts = new Alerts();
+        alertModule = new AlertModule();
+        this.debug = config.getBoolean("settings.debug");
     }
 
     private void registerCommands() {
+        commandFramework = new CommandFramework(plugin);
         ClassRegistration.loadCommandsFromPackage(plugin, "gg.clouke.alpha.command");
     }
 
     public void stop(final AlphaPlugin plugin) {
         stopPacketEvents();
         Bukkit.getScheduler().cancelTasks(plugin);
-
-        profileRouter = null;
+        this.config.save();
+        this.profileRouter = null;
     }
 
     private void startPacketEvents() {
