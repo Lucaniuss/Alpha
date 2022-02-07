@@ -1,8 +1,7 @@
-package gg.clouke.alpha.packet.engine;
+package gg.clouke.alpha.network.packet.engine;
 
-import gg.clouke.alpha.packet.Packet;
+import gg.clouke.alpha.network.packet.Packet;
 import gg.clouke.alpha.profile.Profile;
-import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
