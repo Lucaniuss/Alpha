@@ -33,6 +33,7 @@ public final class Profile {
 
     private int ticks = 0;
     private boolean exempted = false;
+    private boolean banned = false;
 
     public Profile(final Player player) {
         this.player = player;
