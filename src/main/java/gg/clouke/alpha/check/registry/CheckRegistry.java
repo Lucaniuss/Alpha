@@ -5,6 +5,7 @@ import gg.clouke.alpha.check.impl.combat.autoclicker.AutoClickerA;
 import gg.clouke.alpha.check.impl.combat.autoclicker.AutoClickerB;
 import gg.clouke.alpha.check.impl.combat.range.RangeA;
 import gg.clouke.alpha.check.impl.combat.range.RangeB;
+import gg.clouke.alpha.check.impl.combat.range.RangeC;
 import gg.clouke.alpha.profile.Profile;
 import lombok.experimental.UtilityClass;
 
@@ -20,6 +21,7 @@ public final class CheckRegistry {
             //AutoClickerA.class, AutoClickerB.class,
 
             RangeA.class, RangeB.class,
+            RangeC.class,
 
     };
 
