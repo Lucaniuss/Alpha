@@ -14,7 +14,7 @@ import java.util.Set;
  * All Rights Reserved
  */
 
-public class Alerts {
+public class AlertModule {
 
     private final Set<Player> alerts = new HashSet<>();
 

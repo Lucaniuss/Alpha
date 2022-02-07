@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 public class AlertWrapper {
 
-    private final Alerts alerts = Alpha.INSTANCE.getAlerts();
+    private final AlertModule alertModule = Alpha.INSTANCE.getAlertModule();
 
     private final Check check;
     private final Profile profile;
@@ -38,7 +38,7 @@ public class AlertWrapper {
                 "/teleport " + profile.getPlayer().getName()
         );
 
-        alerts.getAlerter().forEach(clickable::sendToPlayer);
+        alertModule.getAlerter().forEach(clickable::sendToPlayer);
     }
 
 }
