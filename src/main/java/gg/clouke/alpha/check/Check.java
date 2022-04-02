@@ -88,18 +88,4 @@ public abstract class Check {
         return Alpha.INSTANCE.getProfileRouter().get(player);
     }
 
-    /**
-     * <p>
-     * This function is used for reach checks to get a well calculated distance
-     *
-     * @param player Players Vector Location
-     * @param target Targets Vector Location
-     * @return Returning a better calculated distance from A to B {@link BoundBox}
-     */
-    public double getDistance(Vector player, Vector target) {
-        BoundBox bb = new BoundBox(target, 0.403125, 1.905, 0.1001);
-
-        return bb.distance(player);
-    }
-
 }
