@@ -1,4 +1,4 @@
-package gg.clouke.alpha.wrapper;
+package gg.clouke.alpha.wrappers;
 
 import lombok.Getter;
 import org.bukkit.util.Vector;
