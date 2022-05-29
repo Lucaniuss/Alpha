@@ -1,7 +1,7 @@
 package gg.clouke.alpha.command;
 
 import gg.clouke.alpha.util.chat.CC;
-import gg.clouke.alpha.util.clazz.ClassRegistration;
+import gg.clouke.alpha.util.clazz.ClassService;
 import gg.clouke.alpha.util.command.BaseCommand;
 import gg.clouke.alpha.util.command.Command;
 import gg.clouke.alpha.util.command.CommandArgs;
@@ -16,27 +16,22 @@ import java.util.List;
  * @since 04.02.2022 18:35
  * All Rights Reserved
  */
-
 public class AlphaCommand extends BaseCommand {
 
-    private final List<String> commands = new ArrayList<>();
+    private static final List<String> commands = new ArrayList<>();
 
     @Command(name = "alpha", permission = "alpha.command.alpha")
-    @Override
-    public void onCommand(final CommandArgs cmd) {
+    public void onDispatch(final CommandArgs cmd) {
         Asynchronous.run(() -> {
             final Player player = cmd.getPlayer();
 
             if (commands.isEmpty()) { // Only initialize once
-                ClassRegistration.getClassesInPackage(plugin.getPlugin(), "gg.clouke.alpha.command.impl")
+                ClassService.getClasses(plugin, "gg.clouke.alpha.command.impl")
                         .forEach(clazz -> commands.add(clazz.getSimpleName().toLowerCase().replace("command", "")));
             }
 
-            player.sendMessage(CC.translate("&e&lAlpha Commands (&c&l" + commands.size() + "&e&l):"));
-            for (final String command : commands) {
-                player.sendMessage(CC.translate(" &7* &e/" + cmd.getLabel() + " " + command));
-            }
-
+            player.sendMessage(CC.translate("&e&lAlpha Commands (&a&l" + commands.size() + "&e&l):"));
+            commands.forEach(command -> player.sendMessage(CC.translate("&8&l- &e/alpha &7" + command)));
         });
     }
 }

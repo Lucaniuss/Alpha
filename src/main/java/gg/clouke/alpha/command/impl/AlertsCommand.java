@@ -1,10 +1,10 @@
 package gg.clouke.alpha.command.impl;
 
-import gg.clouke.alpha.Alpha;
-import gg.clouke.alpha.module.alert.AlertModule;
+import gg.clouke.alpha.provider.alert.AlertProvider;
 import gg.clouke.alpha.util.command.BaseCommand;
 import gg.clouke.alpha.util.command.Command;
 import gg.clouke.alpha.util.command.CommandArgs;
+import gg.clouke.alpha.util.functions.Condition;
 import org.bukkit.entity.Player;
 
 /**
@@ -16,16 +16,10 @@ import org.bukkit.entity.Player;
 public class AlertsCommand extends BaseCommand {
 
     @Command(name = "alpha.alerts", permission = "alpha.command.alerts")
-    @Override
-    public void onCommand(final CommandArgs cmd) {
+    public void onDispatch(final CommandArgs cmd) {
         final Player player = cmd.getPlayer();
-        final AlertModule alertModule = Alpha.INSTANCE.getAlertModule();
+        final AlertProvider alerts = plugin.getAlertProvider();
 
-        if (alertModule.hasAlerts(player)) {
-            alertModule.remove(player);
-            return;
-        }
-
-        alertModule.add(player);
+        Condition.of(alerts.isSubscribed(player), () -> alerts.unsubscribe(player)).orElse(() -> alerts.subscribe(player));
     }
 }
