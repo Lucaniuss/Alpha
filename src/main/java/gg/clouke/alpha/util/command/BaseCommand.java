@@ -9,12 +9,13 @@ import gg.clouke.alpha.Alpha;
  */
 
 public abstract class BaseCommand {
-    protected final Alpha plugin = Alpha.INSTANCE;
+
+    protected final Alpha plugin = Alpha.getInstance();
 
     public BaseCommand() {
         this.plugin.getCommandFramework().registerCommands(this);
     }
 
-    public abstract void onCommand(CommandArgs cmd);
+    public abstract void onDispatch(CommandArgs cmd);
 
 }
