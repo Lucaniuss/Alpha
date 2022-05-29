@@ -5,12 +5,6 @@ import lombok.Getter;
 import java.util.Collection;
 import java.util.LinkedList;
 
-/**
- * @author Clouke
- * @since 04.02.2022 18:54
- * All Rights Reserved
- */
-
 public final class EvictingList<T> extends LinkedList<T> {
 
     @Getter
