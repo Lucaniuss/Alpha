@@ -19,10 +19,10 @@ import java.util.jar.JarFile;
  * All Rights Reserved
  */
 
-public class ClassRegistration {
+public class ClassService {
 
     public static void loadListenersFromPackage(Plugin plugin, String packageName) {
-        for (Class<?> clazz : getClassesInPackage(plugin, packageName)) {
+        for (Class<?> clazz : getClasses(plugin, packageName)) {
             if (isListener(clazz)) {
                 try {
                     plugin.getServer().getPluginManager().registerEvents((Listener) clazz.newInstance(), plugin);
@@ -40,7 +40,7 @@ public class ClassRegistration {
     }
 
     public static void loadCommandsFromPackage(Plugin plugin, String packageName) {
-        for (Class<?> clazz : getClassesInPackage(plugin, packageName)) {
+        for (Class<?> clazz : getClasses(plugin, packageName)) {
             try {
                 clazz.newInstance();
             } catch (Exception exception) {
@@ -60,7 +60,7 @@ public class ClassRegistration {
         return false;
     }
 
-    public static Collection<Class<?>> getClassesInPackage(Plugin plugin, String packageName) {
+    public static Collection<Class<?>> getClasses(Plugin plugin, String packageName) {
         JarFile jarFile;
         Collection<Class<?>> classes = new ArrayList<>();
         CodeSource codeSource = plugin.getClass().getProtectionDomain().getCodeSource();
