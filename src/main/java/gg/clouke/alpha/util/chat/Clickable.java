@@ -1,57 +1,29 @@
 package gg.clouke.alpha.util.chat;
 
-import lombok.NoArgsConstructor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import gg.clouke.alpha.util.annotations.DoNotMock;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * @author Clouke
- * @since 04.02.2022 19:11
- * All Rights Reserved
+ * @since 28.05.2022 21:43
+ * © Alpha - All Rights Reserved
  */
 
-@NoArgsConstructor
-public class Clickable {
+@DoNotMock("Use Clickable clickable = new DefaultClickable(\"text\", player);")
+public interface Clickable {
 
-    private List<TextComponent> components = new ArrayList<>();
-
-    public Clickable(String msg) {
-        this.components.add(new TextComponent(msg));
+    static Clickable builder() {
+        return new DefaultClickable();
     }
 
-    public Clickable(String msg, String hoverMsg, String clickString) {
-        this.add(msg, hoverMsg, clickString);
-    }
+    Clickable append(String text);
 
-    public TextComponent add(String msg, String hoverMsg, String clickString) {
-        TextComponent message = new TextComponent(msg);
+    Clickable append(String msg, String hoverMsg, String clickString);
 
-        if(hoverMsg != null) {
-            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    new ComponentBuilder(hoverMsg).create()));
-        }
+    void send(Player player);
 
-        if(clickString != null && !clickString.equals("")) {
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickString));
-        }
+    void send(Iterator<Player> players);
 
-        this.components.add(message);
-
-        return message;
-    }
-
-    public void add(String message) {
-        this.components.add(new TextComponent(message));
-    }
-
-    public void sendToPlayer(Player player) {
-        player.spigot().sendMessage(this.components.toArray(new TextComponent[0]));
-    }
 }
-
