@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -43,28 +45,26 @@ public class LogsCommand extends BaseCommand {
                 return;
             }
 
-            StringBuilder builder = new StringBuilder();
-            boolean shouldPaste = logs.size() > 15;
-            logs.forEach(log ->
-                    builder.append(shouldPaste ? target.getName() + " -> " : "")
-                    .append(shouldPaste ? "" : " &e")
-                    .append("[")
-                    .append(log.getBaseName())
-                    .append(" ")
-                    .append(log.getBaseType())
-                    .append("]")
-                    .append(shouldPaste ? "" : "&7")
-                    .append(" ")
-                    .append(log.getData())
-                    .append("\n"));
-
-            if (shouldPaste) {
-                player.sendMessage(CC.translate("&eUploaded logs to: &7https://pastie.io/" + plugin.getLogProvider().toPaste(builder.toString())));
-                return;
+            AtomicReference<StringBuilder> builder = new AtomicReference<>();
+            if (logs.size() >= 15) {
+                builder.set(new StringBuilder());
+                logs.forEach(log -> builder.get().append(log.append())); // for paste
             }
 
+            player.sendMessage(CC.translate(CC.LINE));
             player.sendMessage(CC.translate("&e" + target.getName() + "'s Logs:"));
-            player.sendMessage(CC.translate(builder.toString()));
+
+            AtomicInteger i = new AtomicInteger();
+            logs.forEach(log -> {
+                if (i.getAndIncrement() >= 15) {
+                    player.sendMessage(CC.translate("&eUploaded logs to: &7https://pastie.io/" + plugin.getLogProvider().toPaste(builder.toString())));
+                    return;
+                }
+
+                player.sendMessage(CC.translate(log.string()));
+            });
+
+            player.sendMessage(CC.translate(CC.LINE));
         });
     }
 

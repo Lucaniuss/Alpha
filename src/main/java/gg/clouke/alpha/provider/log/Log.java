@@ -60,4 +60,12 @@ public class Log {
 
         this.document = document;
     }
+
+    public String string() {
+        return "[" + baseName + " " + baseType + "] &7" + data;
+    }
+
+    public String append() {
+        return player + " -> [" + baseName + " " + baseType + "] " + data + "\n";
+    }
 }
