@@ -7,7 +7,11 @@ import gg.clouke.alpha.util.chat.CC;
 import gg.clouke.alpha.util.command.BaseCommand;
 import gg.clouke.alpha.util.command.Command;
 import gg.clouke.alpha.util.command.CommandArgs;
+import gg.clouke.alpha.util.command.Completer;
 import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Clouke
@@ -21,7 +25,7 @@ public class ProfileCommand extends BaseCommand {
         Player player = cmd.getPlayer();
         String[] args = cmd.getArgs();
 
-        if (args.length < 1) {
+        if (args.length != 1) {
             player.sendMessage(CC.translate("&cUsage: /alpha profile <user>"));
             return;
         }
@@ -40,5 +44,10 @@ public class ProfileCommand extends BaseCommand {
         player.sendMessage(CC.translate("&7- &ePackets/S: &f" + transactions.getInterval()));
         player.sendMessage(CC.translate("&7- &ePackets/M: &f" + transactions.getInterval() * 60));
         player.sendMessage(CC.translate("&7- &eThread-Index: &f" + profile.getThreadProvider().getGroup()));
+    }
+
+    @Completer(name = "alpha.profile")
+    public List<String> onCompleter(CommandArgs cmd) {
+        return plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
     }
 }
