@@ -1,2 +1,12 @@
-settings:
-  debug: true
+SETTINGS:
+  DEBUG: true
+MONGO: # Used to save logs
+  ENABLED: true # If disabled, no logs will be saved
+  HOST: 127.0.0.1
+  PORT: 27017
+  DATABASE: "Alpha"
+  AUTH:
+    ENABLED: true
+    USER: " "
+    PASS: " "
+    AUTH-DB: "admin"
