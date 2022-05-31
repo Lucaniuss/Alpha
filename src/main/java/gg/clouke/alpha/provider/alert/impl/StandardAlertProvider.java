@@ -1,6 +1,7 @@
 package gg.clouke.alpha.provider.alert.impl;
 
 import com.google.common.base.Preconditions;
+import gg.clouke.alpha.Alpha;
 import gg.clouke.alpha.check.AbstractCheck;
 import gg.clouke.alpha.check.BaseCheck;
 import gg.clouke.alpha.profile.Profile;
@@ -24,10 +25,12 @@ import java.util.concurrent.Executors;
 
 public class StandardAlertProvider implements AlertProvider {
 
+    private final Alpha plugin;
     private final Set<Player> alerts;
     private final ExecutorService thread;
 
     public StandardAlertProvider() {
+        this.plugin = Alpha.getInstance();
         this.alerts = new HashSet<>();
         this.thread = Executors.newSingleThreadExecutor();
     }
@@ -45,8 +48,10 @@ public class StandardAlertProvider implements AlertProvider {
                 String alert = CC.translate("&e[Alpha] &7" + player + " -> &e[" + base.name() + " " + base.type() + "] &7" + data);
 
                 Clickable.builder()
-                        .append(alert, "", "/tp " + player)
+                        .append(alert, CC.translate("&e&oClick to teleport"), "/tp " + player)
                         .send(alerts.iterator());
+
+                plugin.getLogProvider().log(profile.getUniqueId(), player, base, check.getVl(), data);
             });
 
             if (check.getVl() >= base.maxVl()) {

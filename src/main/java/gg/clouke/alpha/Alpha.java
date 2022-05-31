@@ -9,6 +9,10 @@ import gg.clouke.alpha.provider.alert.AlertProvider;
 import gg.clouke.alpha.provider.alert.impl.StandardAlertProvider;
 import gg.clouke.alpha.provider.event.EventBus;
 import gg.clouke.alpha.provider.event.EventProvider;
+import gg.clouke.alpha.provider.log.LogProvider;
+import gg.clouke.alpha.provider.log.impl.StandardLogProvider;
+import gg.clouke.alpha.provider.mongo.MongoProvider;
+import gg.clouke.alpha.provider.mongo.impl.StandardMongoProvider;
 import gg.clouke.alpha.provider.network.NetworkProvider;
 import gg.clouke.alpha.provider.network.impl.PacketProvider;
 import gg.clouke.alpha.provider.network.impl.StandardNetworkProvider;
@@ -21,11 +25,12 @@ import gg.clouke.alpha.util.config.ConfigFile;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Optional;
+
 @Getter
 public final class Alpha extends JavaPlugin {
 
-    @Getter
-    private static Alpha instance;
+    @Getter private static Alpha instance;
 
     private PacketProvider packetProvider;
     private AlertProvider alertProvider;
@@ -38,6 +43,8 @@ public final class Alpha extends JavaPlugin {
     private NetworkProvider networkProvider;
     private ThreadWatcher threadWatcher;
     private ConfigFile config;
+    private MongoProvider mongoProvider;
+    private LogProvider logProvider;
     private boolean debug;
 
     @Override
@@ -55,6 +62,17 @@ public final class Alpha extends JavaPlugin {
         this.threadWatcher = new ThreadWatcher();
         this.tickProvider = new TickProviderFactory();
         this.eventProvider = new EventBus();
+        this.mongoProvider = new StandardMongoProvider()
+                .enable(config.getBoolean("MONGO.ENABLED"))
+                .host(config.getString("MONGO.HOST"))
+                .port(config.getInt("MONGO.PORT"))
+                .database(config.getString("MONGO.DATABASE"))
+                .auth(config.getBoolean("MONGO.AUTH.ENABLED"))
+                .user(config.getString("MONGO.AUTH.USER"))
+                .pass(config.getString("MONGO.AUTH.PASS"))
+                .authDb(config.getString("MONGO.AUTH.AUTH-DB"))
+                .connect();
+        this.logProvider = new StandardLogProvider();
 
         ClassService.loadCommandsFromPackage(this, "gg.clouke.alpha.command");
         new BukkitProfileInjector();
@@ -64,6 +82,8 @@ public final class Alpha extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.logProvider.save();
+        Optional.ofNullable(this.mongoProvider).ifPresent(MongoProvider::dispose);
         this.tickProvider.stop();
     }
 
