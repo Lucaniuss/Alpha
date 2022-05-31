@@ -5,7 +5,11 @@ import gg.clouke.alpha.util.chat.CC;
 import gg.clouke.alpha.util.command.BaseCommand;
 import gg.clouke.alpha.util.command.Command;
 import gg.clouke.alpha.util.command.CommandArgs;
+import gg.clouke.alpha.util.command.Completer;
 import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Clouke
@@ -20,7 +24,7 @@ public class DebugCommand extends BaseCommand {
         Player player = cmd.getPlayer();
         String[] args = cmd.getArgs();
 
-        if (args.length < 1) {
+        if (args.length != 1) {
             player.sendMessage(CC.translate("&cUsage: /alpha debug <check>"));
             return;
         }
@@ -38,5 +42,14 @@ public class DebugCommand extends BaseCommand {
                     player.sendMessage(CC.translate("&eDebugging for " + queryCheck + " " + (debugging ? "&cdisabled" : "&aenabled") + "&e."));
                 });
 
+    }
+
+    @Completer(name = "alpha.debug")
+    public List<String> onCompleter(CommandArgs cmd) {
+        return plugin.getProfileProvider().get(cmd.getPlayer().getUniqueId())
+                .getChecks().stream()
+                .map(check -> check.getClass().getSimpleName())
+                .filter(check -> check.startsWith(cmd.getArgs()[0]))
+                .collect(Collectors.toList());
     }
 }
