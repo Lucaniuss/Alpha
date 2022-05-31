@@ -34,11 +34,11 @@ public class DefaultClickable implements Clickable {
     public Clickable append(String msg, String hoverMsg, String clickString) {
         TextComponent message = new TextComponent(msg);
 
-        if(hoverMsg != null) {
+        if (hoverMsg != null) {
             message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverMsg).create()));
         }
 
-        if(clickString != null && !clickString.equals("")) {
+        if (clickString != null && !clickString.equals("")) {
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickString));
         }
 
