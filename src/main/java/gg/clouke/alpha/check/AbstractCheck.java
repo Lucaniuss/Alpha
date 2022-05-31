@@ -18,8 +18,7 @@ public abstract class AbstractCheck {
     protected double buffer;
     private int vl;
 
-    @Setter
-    private boolean debug;
+    @Setter private boolean debug;
 
     public AbstractCheck(final Profile profile) {
         this.profile = profile;
