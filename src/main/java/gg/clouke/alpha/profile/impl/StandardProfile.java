@@ -33,10 +33,10 @@ public final class StandardProfile implements Profile {
     public StandardProfile(Player player) {
         this.player = player;
         this.uuid = player.getUniqueId();
+        this.trackedEvents = new ArrayList<>();
         this.containerService = new StandardContainerService(this);
         this.threadProvider = new ThreadProviderFactory(this);
         this.checks = Alpha.getInstance().getCheckFactory().loadChecks(this);
-        this.trackedEvents = new ArrayList<>();
     }
 
     @Override
