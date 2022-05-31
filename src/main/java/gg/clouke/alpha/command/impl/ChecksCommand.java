@@ -20,11 +20,11 @@ public class ChecksCommand extends BaseCommand {
         Player player = cmd.getPlayer();
         Profile profile = this.plugin.getProfileProvider().get(player.getUniqueId());
 
-        player.sendMessage(CC.translate("&7&m---------------------------------"));
+        player.sendMessage(CC.translate(CC.LINE));
         profile.getChecks().forEach(check -> {
             BaseCheck base = check.getBaseCheck();
             player.sendMessage(CC.translate("&7- &e" + base.name() + " " + base.type() + " &7(" + base.maxVl() + ")"));
         });
-        player.sendMessage(CC.translate("&7&m---------------------------------"));
+        player.sendMessage(CC.translate(CC.LINE));
     }
 }
