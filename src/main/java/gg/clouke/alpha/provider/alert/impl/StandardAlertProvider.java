@@ -43,16 +43,17 @@ public class StandardAlertProvider implements AlertProvider {
                 return;
 
             BaseCheck base = check.getBaseCheck();
+            String player = profile.getPlayer().getName();
+
             Condition.of(!alerts.isEmpty(), () -> {
-                String player = profile.getPlayer().getName();
                 String alert = CC.translate("&e[Alpha] &7" + player + " -> &e[" + base.name() + " " + base.type() + "] &7" + data);
 
                 Clickable.builder()
                         .append(alert, CC.translate("&e&oClick to teleport"), "/tp " + player)
                         .send(alerts.iterator());
-
-                plugin.getLogProvider().log(profile.getUniqueId(), player, base, check.getVl(), data);
             });
+
+            plugin.getLogProvider().log(profile.getUniqueId(), player, base, check.getVl(), data);
 
             if (check.getVl() >= base.maxVl()) {
                 //Scheduler.sync().execute(() -> profile.getPlayer().kickPlayer(CC.translate("&cyikes")));
